@@ -1,0 +1,1 @@
+web: gunicorn --chdir frontend app:app

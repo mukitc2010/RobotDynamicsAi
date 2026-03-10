@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Robolog Dashboard</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 2rem; }
+    pre { background: #f5f5f5; padding: 1rem; }
+    button { padding: 0.5rem 1rem; }
+  </style>
+</head>
+<body>
+  <h1>Robolog.ai Dashboard</h1>
+  <button onclick="location.href='/run_pipeline'">Run Pipeline</button>
+  <h2>Project State</h2>
+  <pre>{{ state | tojson(indent=2) }}</pre>
+</body>
+</html>

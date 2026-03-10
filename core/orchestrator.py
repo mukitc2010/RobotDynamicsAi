@@ -14,6 +14,15 @@ logger = get_logger(__name__)
 class Orchestrator:
     def __init__(self, initial_state: Dict[str, Any] = None):
         self.state = ProjectState(initial_state or {}).data
+        # write initial state
+        self._save_state()
+
+    def _save_state(self) -> None:
+        import json, os
+
+        os.makedirs("artifacts", exist_ok=True)
+        with open("artifacts/state.json", "w") as f:
+            json.dump(self.state, f, indent=2)
 
     def run(self) -> Dict[str, Any]:
         logger.info("Starting orchestration")
@@ -23,6 +32,7 @@ class Orchestrator:
                 logger.info(f"Running {agent_cls.__name__}")
                 self.state = agent.run()
                 logger.info(f"State after {agent_cls.__name__}: {self.state}")
+                self._save_state()
         except Exception as e:
             logger.error(f"Orchestration failed: {e}")
             raise

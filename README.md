@@ -51,6 +51,18 @@ python scripts/run_evaluation.py --model artifacts/model.zip --episodes 5
 python scripts/run_pipeline.py
 ```
 
+## Dashboard
+
+A simple Flask-based front end is available under `frontend/`:
+
+```bash
+cd frontend
+pip install flask
+python app.py
+```
+
+Visit http://localhost:5000 to view the project state and start the pipeline.
+
 ## Testing
 
 ```bash
