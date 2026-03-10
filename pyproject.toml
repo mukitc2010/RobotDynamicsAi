@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "robolog-ai-lab"
+version = "0.1.0"
+description = "Multi-agent robotics AI platform for humanoid locomotion."
+authors = ["Robotics AI Team <team@robolog.us>"]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+gymnasium = "*"
+mujoco = "*"
+stable-baselines3 = "*"
+torch = "*"
+pydantic = "*"
+typer = "*"
+pyyaml = "*"
+
+[tool.poetry.dev-dependencies]
+pytest = "*"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

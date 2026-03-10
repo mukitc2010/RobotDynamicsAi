@@ -1,0 +1,8 @@
+planning:
+  enabled: true
+development:
+  enabled: true
+testing:
+  enabled: true
+delivery:
+  enabled: true

@@ -1,0 +1,7 @@
+# training configuration for PPO
+algorithm: PPO
+total_timesteps: 100000
+policy: MlpPolicy
+env: Humanoid-v4
+save_path: artifacts/model.zip
+log_path: artifacts/logs
