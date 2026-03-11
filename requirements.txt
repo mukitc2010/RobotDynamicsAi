@@ -1,5 +1,6 @@
 gymnasium
 mujoco
+imageio
 stable-baselines3
 torch
 pydantic
