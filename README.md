@@ -88,3 +88,31 @@ pytest -q
 2. Expand PlanningAgent to read natural language requirements.
 3. Add CI for model validation and artifact versioning.
 4. Deploy orchestration to cloud with containerized agents.
+
+## Intelligence Engine
+
+The project now includes a high-level robot intelligence layer under
+`core/intelligence/` with:
+
+- `WorldModel`: summarizes readiness and robot context from state.
+- `TaskPlanner`: converts natural-language goals into a multi-step plan.
+- `SkillRouter`: maps goals to executable robot commands.
+- `SafetyGovernor`: clamps commands to safe limits.
+- `MemoryStore`: stores decision and feedback events.
+
+### Intelligence API
+
+Available from the Flask dashboard server:
+
+- `GET /api/intelligence/status`
+- `POST /api/intelligence/plan`
+- `POST /api/intelligence/feedback`
+- `GET /api/intelligence/memory`
+
+Example plan request:
+
+```bash
+curl -X POST http://127.0.0.1:5000/api/intelligence/plan \
+  -H "Content-Type: application/json" \
+  -d '{"goal":"walk forward safely"}'
+```

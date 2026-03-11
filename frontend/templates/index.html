@@ -54,6 +54,7 @@
       align-items: center;
       justify-content: space-between;
       padding: 1rem 1.1rem;
+      gap: 0.6rem;
     }
 
     .title {
@@ -90,6 +91,35 @@
     .action:hover {
       transform: translateY(-1px);
       filter: brightness(1.07);
+    }
+
+    .top-actions {
+      display: flex;
+      gap: 0.55rem;
+      align-items: center;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .action-secondary {
+      border: 1px solid var(--panel-border);
+      border-radius: 10px;
+      padding: 0.65rem 0.9rem;
+      color: var(--ink);
+      font-weight: 600;
+      background: rgba(4, 14, 27, 0.7);
+      cursor: pointer;
+    }
+
+    .live-badge {
+      border: 1px solid rgba(31, 212, 190, 0.4);
+      border-radius: 999px;
+      padding: 0.35rem 0.6rem;
+      font-size: 0.74rem;
+      color: var(--accent);
+      background: rgba(3, 20, 20, 0.65);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
     }
 
     .grid {
@@ -190,6 +220,141 @@
       letter-spacing: 0.08em;
     }
 
+    .mini-grid {
+      display: grid;
+      gap: 0.7rem;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .mini-card {
+      border: 1px solid var(--panel-border);
+      border-radius: 12px;
+      background: rgba(4, 14, 27, 0.6);
+      padding: 0.75rem;
+      display: grid;
+      gap: 0.3rem;
+    }
+
+    .mini-k {
+      color: var(--muted);
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .mini-v {
+      font-size: 0.92rem;
+      color: #dff0ff;
+      word-break: break-word;
+    }
+
+    .docs-grid {
+      display: grid;
+      gap: 0.7rem;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .doc-card {
+      border: 1px solid var(--panel-border);
+      border-radius: 12px;
+      background: rgba(4, 14, 27, 0.6);
+      padding: 0.75rem;
+    }
+
+    .doc-name {
+      margin: 0 0 0.2rem;
+      font-size: 0.9rem;
+      color: #eaf5ff;
+    }
+
+    .doc-path {
+      margin: 0;
+      font-size: 0.8rem;
+      color: #bfd8f4;
+    }
+
+    .status-pill {
+      display: inline-block;
+      margin-top: 0.35rem;
+      font-size: 0.72rem;
+      padding: 0.2rem 0.45rem;
+      border-radius: 999px;
+      border: 1px solid var(--panel-border);
+    }
+
+    .module-grid {
+      display: grid;
+      gap: 0.7rem;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .module-card {
+      border: 1px solid var(--panel-border);
+      border-radius: 12px;
+      background: rgba(4, 14, 27, 0.6);
+      padding: 0.75rem;
+      display: grid;
+      gap: 0.35rem;
+    }
+
+    .module-card h4 {
+      margin: 0;
+      font-size: 0.88rem;
+      color: #eaf5ff;
+      text-transform: capitalize;
+    }
+
+    .module-card p {
+      margin: 0;
+      color: #bfd8f4;
+      font-size: 0.8rem;
+      line-height: 1.35;
+    }
+
+    .api-wrap {
+      border: 1px solid var(--panel-border);
+      border-radius: 12px;
+      background: rgba(4, 14, 27, 0.6);
+      padding: 0.75rem;
+      display: grid;
+      gap: 0.6rem;
+    }
+
+    .api-buttons {
+      display: flex;
+      gap: 0.45rem;
+      flex-wrap: wrap;
+    }
+
+    .api-btn {
+      border: 1px solid var(--panel-border);
+      border-radius: 8px;
+      background: rgba(2, 11, 21, 0.72);
+      color: #d5ebff;
+      padding: 0.4rem 0.6rem;
+      font-size: 0.75rem;
+      cursor: pointer;
+    }
+
+    .api-btn:hover {
+      border-color: rgba(31, 212, 190, 0.5);
+      color: var(--accent);
+    }
+
+    .api-output {
+      max-height: 260px;
+      overflow: auto;
+      font-size: 0.77rem;
+      margin: 0;
+      padding: 0.7rem;
+      border-radius: 10px;
+      border: 1px solid var(--panel-border);
+      background: rgba(2, 11, 21, 0.84);
+      color: #cfe7ff;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
     .employee-grid {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -248,6 +413,15 @@
     }
 
     @media (max-width: 940px) {
+      .topbar {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .top-actions {
+        justify-content: flex-start;
+      }
+
       .grid {
         grid-template-columns: 1fr;
       }
@@ -255,75 +429,58 @@
       .employee-grid {
         grid-template-columns: 1fr;
       }
+
+      .mini-grid,
+      .docs-grid,
+      .module-grid {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </head>
 <body>
-  {% set agents = [
-    {
-      "name": "PlanningAgent",
-      "role": "Robotics Product Manager",
-      "mission": "Define requirements, milestones, and assignment plan.",
-      "outputs": "tasks, milestones, acceptance criteria"
-    },
-    {
-      "name": "DevelopmentAgent",
-      "role": "Robotics Software Engineer",
-      "mission": "Build environment, training pipeline, and artifacts.",
-      "outputs": "trained model, logs, experiment artifacts"
-    },
-    {
-      "name": "TestingAgent",
-      "role": "Robotics QA Engineer",
-      "mission": "Validate runtime behavior and evaluation metrics.",
-      "outputs": "QA summary, metrics report"
-    },
-    {
-      "name": "DeliveryAgent",
-      "role": "DevOps and Documentation Engineer",
-      "mission": "Ship release reports, docs, and deployment notes.",
-      "outputs": "reports, release artifacts"
-    }
-  ] %}
-
   <div class="shell">
     <header class="topbar panel">
       <div class="title">
         <h1>robolog.us control station</h1>
         <p>Humanoid Systems Pipeline Dashboard</p>
       </div>
-      <button class="action" onclick="location.href='/run_pipeline'">Run Pipeline</button>
+      <div class="top-actions">
+        <div id="liveBadge" class="live-badge">Live: Connecting</div>
+        <button class="action-secondary" id="refreshNowBtn">Refresh Now</button>
+        <button class="action" id="runPipelineBtn">Run Pipeline</button>
+      </div>
     </header>
 
     <section class="grid">
       <aside class="stats panel">
         <div class="stat-card">
           <div class="label">Planning</div>
-          <div class="value {{ 'ok' if state.get('planning_status') == 'done' else 'warn' }}">
+          <div id="planningStatus" class="value {{ 'ok' if state.get('planning_status') == 'done' else 'warn' }}">
             {{ state.get('planning_status', 'pending') }}
           </div>
         </div>
         <div class="stat-card">
           <div class="label">Development</div>
-          <div class="value {{ 'ok' if state.get('development_status') == 'training_completed' else 'warn' }}">
+          <div id="developmentStatus" class="value {{ 'ok' if state.get('development_status') == 'training_completed' else 'warn' }}">
             {{ state.get('development_status', 'pending') }}
           </div>
         </div>
         <div class="stat-card">
           <div class="label">Testing</div>
-          <div class="value {{ 'ok' if state.get('testing_status') == 'done' else 'warn' }}">
+          <div id="testingStatus" class="value {{ 'ok' if state.get('testing_status') == 'done' else 'warn' }}">
             {{ state.get('testing_status', 'pending') }}
           </div>
         </div>
         <div class="stat-card">
           <div class="label">Delivery</div>
-          <div class="value {{ 'ok' if state.get('delivery_status') == 'done' else 'warn' }}">
+          <div id="deliveryStatus" class="value {{ 'ok' if state.get('delivery_status') == 'done' else 'warn' }}">
             {{ state.get('delivery_status', 'pending') }}
           </div>
         </div>
         <div class="stat-card">
           <div class="label">Model Artifact</div>
-          <div class="value">{{ (state.get('artifacts') or ['none'])[0] }}</div>
+          <div id="modelArtifact" class="value">{{ (state.get('artifacts') or ['none'])[0] }}</div>
         </div>
 
         <div class="agent-directory">
@@ -342,6 +499,35 @@
       </aside>
 
       <article class="state-wrap panel">
+        <h2>Runtime Health</h2>
+        <section class="mini-grid">
+          <div class="mini-card">
+            <div class="mini-k">Timestamp</div>
+            <div id="healthTimestamp" class="mini-v">{{ health.timestamp }}</div>
+          </div>
+          <div class="mini-card">
+            <div class="mini-k">Python</div>
+            <div id="healthPython" class="mini-v">{{ health.python_version }}</div>
+          </div>
+          <div class="mini-card">
+            <div class="mini-k">NPM</div>
+            <div id="healthNpm" class="mini-v {{ 'ok' if health.npm_installed else 'warn' }}">{{ 'installed' if health.npm_installed else 'missing' }}</div>
+          </div>
+        </section>
+
+        <h2>Planning Documents</h2>
+        <section class="docs-grid">
+          {% for doc in docs %}
+            <div class="doc-card">
+              <h3 class="doc-name">{{ doc.name }}</h3>
+              <p class="doc-path">{{ doc.path }}</p>
+              <span class="status-pill {{ 'ok' if doc.exists else 'warn' }}">
+                {{ 'available' if doc.exists else 'missing' }}
+              </span>
+            </div>
+          {% endfor %}
+        </section>
+
         <h2>Agent Employees</h2>
         <section class="employee-grid">
           {% for agent in agents %}
@@ -354,10 +540,135 @@
           {% endfor %}
         </section>
 
+        <h2>Body Part Modules</h2>
+        <section class="module-grid">
+          {% if body_modules %}
+            {% for mod in body_modules %}
+              <div class="module-card">
+                <h4>{{ mod.name }}</h4>
+                <p>{{ mod.purpose }}</p>
+              </div>
+            {% endfor %}
+          {% else %}
+            <div class="module-card">
+              <h4>Not Generated Yet</h4>
+              <p>Run pipeline to populate body part modules from DevelopmentAgent output.</p>
+            </div>
+          {% endif %}
+        </section>
+
         <h2>Project State JSON</h2>
-        <pre>{{ state | tojson(indent=2) }}</pre>
+        <pre id="stateJsonOutput">{{ state | tojson(indent=2) }}</pre>
+
+        <h2>API Explorer</h2>
+        <section class="api-wrap">
+          <div class="api-buttons">
+            <button class="api-btn" data-api="/api/health">GET /api/health</button>
+            <button class="api-btn" data-api="/api/agents">GET /api/agents</button>
+            <button class="api-btn" data-api="/api/body-modules">GET /api/body-modules</button>
+            <button class="api-btn" data-api="/api/planning-docs">GET /api/planning-docs</button>
+            <button class="api-btn" data-api="/api/dashboard">GET /api/dashboard</button>
+          </div>
+          <pre id="apiOutput" class="api-output">Click an endpoint button to preview live API response.</pre>
+        </section>
       </article>
     </section>
   </div>
+
+  <script>
+    const planningEl = document.getElementById("planningStatus");
+    const developmentEl = document.getElementById("developmentStatus");
+    const testingEl = document.getElementById("testingStatus");
+    const deliveryEl = document.getElementById("deliveryStatus");
+    const artifactEl = document.getElementById("modelArtifact");
+    const tsEl = document.getElementById("healthTimestamp");
+    const pyEl = document.getElementById("healthPython");
+    const npmEl = document.getElementById("healthNpm");
+    const stateEl = document.getElementById("stateJsonOutput");
+    const badgeEl = document.getElementById("liveBadge");
+    const apiOutputEl = document.getElementById("apiOutput");
+
+    function setStatus(el, value, okValue) {
+      if (!el) return;
+      el.textContent = value || "pending";
+      el.classList.remove("ok", "warn");
+      el.classList.add(value === okValue ? "ok" : "warn");
+    }
+
+    async function fetchDashboard() {
+      try {
+        const response = await fetch("/api/dashboard", { cache: "no-store" });
+        if (!response.ok) throw new Error("dashboard request failed");
+        const data = await response.json();
+
+        setStatus(planningEl, data.state.planning_status, "done");
+        setStatus(developmentEl, data.state.development_status, "training_completed");
+        setStatus(testingEl, data.state.testing_status, "done");
+        setStatus(deliveryEl, data.state.delivery_status, "done");
+
+        if (artifactEl) {
+          const artifacts = data.state.artifacts || [];
+          artifactEl.textContent = artifacts.length ? artifacts[0] : "none";
+        }
+
+        if (data.health) {
+          tsEl.textContent = data.health.timestamp || "-";
+          pyEl.textContent = data.health.python_version || "-";
+          npmEl.textContent = data.health.npm_installed ? "installed" : "missing";
+          npmEl.classList.remove("ok", "warn");
+          npmEl.classList.add(data.health.npm_installed ? "ok" : "warn");
+        }
+
+        if (stateEl) {
+          stateEl.textContent = JSON.stringify(data.state, null, 2);
+        }
+
+        badgeEl.textContent = "Live: Connected";
+        badgeEl.style.borderColor = "rgba(31, 212, 190, 0.4)";
+        badgeEl.style.color = "#1fd4be";
+      } catch (err) {
+        badgeEl.textContent = "Live: Error";
+        badgeEl.style.borderColor = "rgba(255, 92, 122, 0.45)";
+        badgeEl.style.color = "#ff5c7a";
+      }
+    }
+
+    async function runPipelineApi() {
+      const btn = document.getElementById("runPipelineBtn");
+      btn.disabled = true;
+      btn.textContent = "Starting...";
+      try {
+        await fetch("/api/pipeline/run", { method: "POST" });
+        badgeEl.textContent = "Live: Pipeline Running";
+      } finally {
+        setTimeout(() => {
+          btn.disabled = false;
+          btn.textContent = "Run Pipeline";
+          fetchDashboard();
+        }, 1200);
+      }
+    }
+
+    async function fetchApiPreview(path) {
+      apiOutputEl.textContent = "Loading " + path + " ...";
+      try {
+        const res = await fetch(path, { cache: "no-store" });
+        const payload = await res.json();
+        apiOutputEl.textContent = JSON.stringify(payload, null, 2);
+      } catch (err) {
+        apiOutputEl.textContent = "Failed to fetch " + path;
+      }
+    }
+
+    document.getElementById("refreshNowBtn").addEventListener("click", fetchDashboard);
+    document.getElementById("runPipelineBtn").addEventListener("click", runPipelineApi);
+
+    document.querySelectorAll(".api-btn").forEach((btn) => {
+      btn.addEventListener("click", () => fetchApiPreview(btn.dataset.api));
+    });
+
+    fetchDashboard();
+    setInterval(fetchDashboard, 10000);
+  </script>
 </body>
 </html>
