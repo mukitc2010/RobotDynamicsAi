@@ -3,3 +3,4 @@ __pycache__/
 *.pyc
 artifacts/
 reports/
+frontend/__pycache__/

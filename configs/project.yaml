@@ -1,2 +1,20 @@
-project_name: robolog.ai
-requirement: "Train humanoid robot to walk in simulation"
+project_name: robolog.us
+robot_spec:
+  model: G1
+  dimensions_standing: "1320mm × 450mm × 200mm"
+  dimensions_folded: "690mm × 450mm × 300mm"
+  weight_with_battery: "Approx. 35kg"
+  total_dof: 23
+  dof_per_leg: 6
+  dof_waist: 1
+  dof_per_arm: 5
+  max_torque_knee: "90N·m"
+  max_payload_arm: "Approx. 2kg"
+  leg_length: "0.6m"
+  arm_span: "0.45m"
+  sensors: "Depth camera + 3D LiDAR, 4-Microphone Array"
+  battery: "9000mAh (421Wh)"
+  battery_life: "Approx. 2 hours"
+  computing: "8-core high-performance CPU"
+  wifi_bluetooth: "WiFi 6 & Bluetooth 5.2"
+requirement: "Train the G1 humanoid robot to walk in simulation using reinforcement learning with PPO algorithm."

@@ -15,9 +15,19 @@ and delivery.
 ## Architecture
 See `docs/architecture.md` for a detailed description.
 
+DevelopmentAgent body-part implementation reference:
+- `docs/development_body_parts.md`
+
+PlanningAgent documentation:
+- `docs/planning_strategy.md`
+- `docs/requirements_document.md`
+- `docs/planning_process.md`
+
 ## Agent Roles
 - **PlanningAgent:** Defines tasks and milestones from requirements and distributes work among the other agents (development, testing, delivery).
 - **DevelopmentAgent:** Sets up environment and runs PPO training.
+  It now reads the robot specification (G1) and initializes a custom
+  MuJoCo environment before simulating training.
 - **TestingAgent:** Evaluates trained policies and records metrics.
 - **DeliveryAgent:** Generates documentation and release reports.
 
@@ -62,6 +72,10 @@ python app.py
 ```
 
 Visit http://localhost:5000 to view the project state and start the pipeline.
+
+### Notes
+The environment initialization step prints output such as
+`[env] Creating environment for G1 (23 DOF)` when a robot spec is provided.
 
 ## Testing
 
