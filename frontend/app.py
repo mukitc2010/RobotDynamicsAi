@@ -51,6 +51,13 @@ DOC_PATHS = {
     "process": "docs/planning_process.md",
 }
 
+BODY_MODULE_SOURCE_PATHS = {
+    "legs": "agents/development_modules/body_parts/legs.py",
+    "arms": "agents/development_modules/body_parts/arms.py",
+    "waist": "agents/development_modules/body_parts/waist.py",
+    "sensors": "agents/development_modules/body_parts/sensors.py",
+}
+
 INTELLIGENCE = IntelligenceEngine()
 
 
@@ -104,6 +111,14 @@ def read_doc(rel_path: str) -> Optional[str]:
         return f.read()
 
 
+def read_source(rel_path: str) -> Optional[str]:
+    full_path = os.path.join(ROOT_DIR, rel_path)
+    if not os.path.exists(full_path):
+        return None
+    with open(full_path, encoding="utf-8") as f:
+        return f.read()
+
+
 @app.route("/")
 def index():
     state = load_state()
@@ -149,6 +164,20 @@ def api_agents():
 def api_body_modules():
     state = load_state()
     return jsonify({"body_modules": state.get("body_part_modules", [])})
+
+
+@app.route("/api/body-modules/source/<part_name>")
+def api_body_module_source(part_name: str):
+    key = part_name.lower()
+    if key not in BODY_MODULE_SOURCE_PATHS:
+        return jsonify({"error": "Invalid part. Use legs, arms, waist, or sensors."}), 404
+
+    rel_path = BODY_MODULE_SOURCE_PATHS[key]
+    source = read_source(rel_path)
+    if source is None:
+        return jsonify({"part": key, "path": rel_path, "available": False}), 404
+
+    return jsonify({"part": key, "path": rel_path, "available": True, "source": source})
 
 
 @app.route("/api/planning-docs")

@@ -331,6 +331,43 @@
       margin: 0.15rem 0;
     }
 
+    .module-actions {
+      display: flex;
+      gap: 0.45rem;
+      margin-top: 0.35rem;
+      flex-wrap: wrap;
+    }
+
+    .module-action-btn {
+      border: 1px solid var(--panel-border);
+      border-radius: 8px;
+      background: rgba(2, 11, 21, 0.72);
+      color: #d5ebff;
+      padding: 0.38rem 0.58rem;
+      font-size: 0.74rem;
+      cursor: pointer;
+    }
+
+    .module-action-btn:hover {
+      border-color: rgba(31, 212, 190, 0.5);
+      color: var(--accent);
+    }
+
+    .module-source {
+      margin: 0;
+      padding: 0.7rem;
+      border-radius: 10px;
+      border: 1px solid var(--panel-border);
+      background: rgba(2, 11, 21, 0.84);
+      color: #cfe7ff;
+      font-size: 0.76rem;
+      line-height: 1.45;
+      overflow: auto;
+      max-height: 320px;
+      display: none;
+      white-space: pre;
+    }
+
     .spec-grid {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -652,6 +689,11 @@
                     {% endfor %}
                   </ul>
                 {% endif %}
+
+                <div class="module-actions">
+                  <button class="module-action-btn" data-part="{{ mod.name|lower }}">View Source Code</button>
+                </div>
+                <pre id="moduleSource-{{ mod.name|lower }}" class="module-source"></pre>
               </div>
             {% endfor %}
           {% else %}
@@ -813,10 +855,42 @@
       }
     }
 
+    async function toggleModuleSource(partName) {
+      const pre = document.getElementById("moduleSource-" + partName);
+      if (!pre) return;
+
+      if (pre.style.display === "block") {
+        pre.style.display = "none";
+        return;
+      }
+
+      pre.style.display = "block";
+      if (pre.textContent.trim()) {
+        return;
+      }
+
+      pre.textContent = "Loading source...";
+      try {
+        const res = await fetch("/api/body-modules/source/" + partName, { cache: "no-store" });
+        const payload = await res.json();
+        if (!res.ok) {
+          pre.textContent = payload.error || "Failed to load source.";
+          return;
+        }
+        pre.textContent = payload.source || "No source available.";
+      } catch (err) {
+        pre.textContent = "Failed to load source.";
+      }
+    }
+
     document.getElementById("refreshNowBtn").addEventListener("click", fetchDashboard);
     document.getElementById("runPipelineBtn").addEventListener("click", runPipelineApi);
     document.getElementById("planGoalBtn").addEventListener("click", planGoal);
     document.getElementById("executeGoalBtn").addEventListener("click", executeGoal);
+
+    document.querySelectorAll(".module-action-btn").forEach((btn) => {
+      btn.addEventListener("click", () => toggleModuleSource(btn.dataset.part));
+    });
 
     document.querySelectorAll(".api-btn").forEach((btn) => {
       btn.addEventListener("click", () => fetchApiPreview(btn.dataset.api));
