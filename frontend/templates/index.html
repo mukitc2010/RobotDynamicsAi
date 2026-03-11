@@ -355,6 +355,45 @@
       word-break: break-word;
     }
 
+    .goal-panel {
+      border: 1px solid var(--panel-border);
+      border-radius: 12px;
+      background: rgba(4, 14, 27, 0.6);
+      padding: 0.85rem;
+      display: grid;
+      gap: 0.7rem;
+    }
+
+    .goal-row {
+      display: grid;
+      grid-template-columns: 1fr auto auto;
+      gap: 0.55rem;
+    }
+
+    .goal-input {
+      width: 100%;
+      border-radius: 10px;
+      border: 1px solid var(--panel-border);
+      background: rgba(2, 11, 21, 0.84);
+      color: #dff0ff;
+      padding: 0.75rem 0.85rem;
+      font-size: 0.88rem;
+    }
+
+    .goal-output {
+      max-height: 280px;
+      overflow: auto;
+      font-size: 0.78rem;
+      margin: 0;
+      padding: 0.8rem;
+      border-radius: 10px;
+      border: 1px solid var(--panel-border);
+      background: rgba(2, 11, 21, 0.84);
+      color: #cfe7ff;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
     .employee-grid {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -432,7 +471,8 @@
 
       .mini-grid,
       .docs-grid,
-      .module-grid {
+      .module-grid,
+      .goal-row {
         grid-template-columns: 1fr;
       }
     }
@@ -557,6 +597,16 @@
           {% endif %}
         </section>
 
+        <h2>Robot Goal Console</h2>
+        <section class="goal-panel">
+          <div class="goal-row">
+            <input id="goalInput" class="goal-input" type="text" value="walk forward safely" placeholder="Type a robot goal" />
+            <button class="action-secondary" id="planGoalBtn">Plan Goal</button>
+            <button class="action" id="executeGoalBtn">Execute Goal</button>
+          </div>
+          <pre id="goalOutput" class="goal-output">Enter a goal like "walk forward safely", "turn waist left", or "move arm to grasp posture".</pre>
+        </section>
+
         <h2>Project State JSON</h2>
         <pre id="stateJsonOutput">{{ state | tojson(indent=2) }}</pre>
 
@@ -587,6 +637,8 @@
     const stateEl = document.getElementById("stateJsonOutput");
     const badgeEl = document.getElementById("liveBadge");
     const apiOutputEl = document.getElementById("apiOutput");
+    const goalInputEl = document.getElementById("goalInput");
+    const goalOutputEl = document.getElementById("goalOutput");
 
     function setStatus(el, value, okValue) {
       if (!el) return;
@@ -660,8 +712,46 @@
       }
     }
 
+    async function planGoal() {
+      const goal = goalInputEl.value.trim() || "stand safely and run diagnostics";
+      goalOutputEl.textContent = "Planning goal...";
+      try {
+        const res = await fetch("/api/intelligence/plan", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ goal }),
+        });
+        const payload = await res.json();
+        goalOutputEl.textContent = JSON.stringify(payload, null, 2);
+      } catch (err) {
+        goalOutputEl.textContent = "Failed to plan goal.";
+      }
+    }
+
+    async function executeGoal() {
+      const goal = goalInputEl.value.trim() || "stand safely and run diagnostics";
+      goalOutputEl.textContent = "Executing goal...";
+      try {
+        const res = await fetch("/api/intelligence/plan", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ goal }),
+        });
+        const payload = await res.json();
+        goalOutputEl.textContent = JSON.stringify({
+          accepted: true,
+          note: "High-level command generated in dashboard intelligence engine.",
+          payload,
+        }, null, 2);
+      } catch (err) {
+        goalOutputEl.textContent = "Failed to execute goal.";
+      }
+    }
+
     document.getElementById("refreshNowBtn").addEventListener("click", fetchDashboard);
     document.getElementById("runPipelineBtn").addEventListener("click", runPipelineApi);
+    document.getElementById("planGoalBtn").addEventListener("click", planGoal);
+    document.getElementById("executeGoalBtn").addEventListener("click", executeGoal);
 
     document.querySelectorAll(".api-btn").forEach((btn) => {
       btn.addEventListener("click", () => fetchApiPreview(btn.dataset.api));
