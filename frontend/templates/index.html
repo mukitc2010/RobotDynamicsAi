@@ -311,6 +311,41 @@
       line-height: 1.35;
     }
 
+    .module-section-title {
+      margin-top: 0.35rem;
+      font-size: 0.72rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .module-list {
+      margin: 0;
+      padding-left: 1rem;
+      color: #d7ebff;
+      font-size: 0.78rem;
+      line-height: 1.45;
+    }
+
+    .module-list li {
+      margin: 0.15rem 0;
+    }
+
+    .spec-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.4rem;
+    }
+
+    .spec-chip {
+      border: 1px solid rgba(90, 136, 184, 0.16);
+      border-radius: 8px;
+      background: rgba(2, 11, 21, 0.72);
+      padding: 0.4rem 0.5rem;
+      font-size: 0.75rem;
+      color: #cfe7ff;
+    }
+
     .api-wrap {
       border: 1px solid var(--panel-border);
       border-radius: 12px;
@@ -475,6 +510,10 @@
       .goal-row {
         grid-template-columns: 1fr;
       }
+
+      .spec-grid {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </head>
@@ -587,6 +626,32 @@
               <div class="module-card">
                 <h4>{{ mod.name }}</h4>
                 <p>{{ mod.purpose }}</p>
+                {% if mod.robot_spec_used %}
+                  <div class="module-section-title">Robot Spec Used</div>
+                  <div class="spec-grid">
+                    {% for key, value in mod.robot_spec_used.items() %}
+                      <div class="spec-chip">{{ key }}: {{ value }}</div>
+                    {% endfor %}
+                  </div>
+                {% endif %}
+
+                {% if mod.code_modules %}
+                  <div class="module-section-title">Code Modules</div>
+                  <ul class="module-list">
+                    {% for item in mod.code_modules %}
+                      <li>{{ item }}</li>
+                    {% endfor %}
+                  </ul>
+                {% endif %}
+
+                {% if mod.functionality %}
+                  <div class="module-section-title">What It Builds</div>
+                  <ul class="module-list">
+                    {% for item in mod.functionality %}
+                      <li>{{ item }}</li>
+                    {% endfor %}
+                  </ul>
+                {% endif %}
               </div>
             {% endfor %}
           {% else %}
